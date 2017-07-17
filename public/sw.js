@@ -1,10 +1,10 @@
-const cacheName = 'static-v3';
+const cacheName = 'static-v4';
 
 addEventListener('install', event => {
   skipWaiting();
   event.waitUntil(async function() {
     const cache = await caches.open(cacheName);
-    await cache.addAll(['/style.css', '/client.js', '/']);
+    await cache.addAll(['/client.js', '/']);
   }());
 });
 

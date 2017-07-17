@@ -6,8 +6,108 @@
   <title>F1 Start Timer</title>
   <link rel="icon" sizes="600x600" href="https://cdn.glitch.com/e0396011-48ac-44c9-bf55-6e11b025757d%2Fflag.png?1500283332796">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#ffffff">
   <script defer src="client.js"></script>
+  <style>
+body, html {
+  height: 100%;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.light {
+  border-radius: 100%;
+  background: #222;
+  margin: 10px;
+}
+
+.light::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.light-strip.on .light:nth-child(1n+3) {
+  background: red;
+}
+
+.f1-lights {
+  display: flex;
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+}
+
+.light-strip {
+  background: black;
+  border-radius: 11px;
+  margin: 0 2px;
+  position: relative;
+  flex: 1;
+}
+
+@media (min-width: 435px) {
+  .light-strip {
+    margin: 0 5px;
+    border-radius: 14px;
+  }
+}
+
+.back-board {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 50%;
+  height: 5%;
+  background: #000;
+  transform: translateY(-50%);
+}
+
+p {
+  font-size: 18px;
+  text-align: center;
+  line-height: 1.4;
+  margin: 1em;
+  margin-bottom: 0;
+}
+
+.time {
+  font-size: 90px;
+  font-size: 12vw;
+  line-height: 1;
+  margin: 1rem;
+  text-transform: uppercase;
+  will-change: transform;
+  text-align: center;
+}
+
+.time.anim {
+  animation: bang 0.1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.best, .credit {
+  font-size: 18px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+@keyframes bang {
+  from {
+    transform: scale(2);
+  }
+}
+
+a:link {
+  text-decoration: none;
+}
+  </style>
   
   <!--
                 \`*-.                    
