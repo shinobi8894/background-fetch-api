@@ -4,7 +4,6 @@
 // init project
 const express = require('express');
 const app = express();
-const { URL } = require('url');
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
@@ -19,7 +18,7 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
-  /*if (new URL(request.url).protocol == 'http') {
+  /*if (request.protocol == 'http') {
     response.redirect(301, 'https://f1-start.glitch.me');
     return;
   }*/

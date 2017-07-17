@@ -1,4 +1,4 @@
-const cacheName = 'static-v2';
+const cacheName = 'static-v3';
 
 addEventListener('install', event => {
   skipWaiting();
@@ -10,7 +10,7 @@ addEventListener('install', event => {
 
 addEventListener('activate', event => {
   event.waitUntil(async function() {
-    const keys = caches.keys();
+    const keys = await caches.keys();
     for (const key of keys) {
       if (key != cacheName) await caches.delete(key);
     }
