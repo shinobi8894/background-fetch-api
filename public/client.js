@@ -102,7 +102,15 @@ function tap(event) {
 }
 
 addEventListener('touchstart', tap, {passive: false});
-addEventListener('mousedown', tap, {passive: false});
+
+addEventListener('mousedown', event => {
+  if (event.button === 0) tap(event);
+}, {passive: false});
+
 addEventListener('keydown', event => {
   if (event.key == ' ') tap(event);
 }, {passive: false});
+
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register('/sw.js');
+}
