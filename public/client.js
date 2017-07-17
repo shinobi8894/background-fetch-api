@@ -86,10 +86,10 @@ function end(timeStamp) {
 }
 
 function tap(event) {
+  let timeStamp = performance.now();
+  
   if (!started && event.target && event.target.closest && event.target.closest('a')) return;
   event.preventDefault();
-  
-  let timeStamp = performance.now();
   
   if (started) {
     end(timeStamp);
