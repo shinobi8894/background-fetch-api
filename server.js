@@ -8,11 +8,17 @@ var app = express();
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
+app.get("/sw.js", function (request, response) {
+  response.set('Cache-Control', 'no-cache');
+  response.sendFile(__dirname + '/public/sw.js');
+});
+
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
+  response.set('Cache-Control', 'no-cache');
   response.sendFile(__dirname + '/views/index.html');
 });
 

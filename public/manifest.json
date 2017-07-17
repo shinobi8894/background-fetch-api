@@ -2,14 +2,13 @@
   "name": "F1 Start",
   "short_name": "F1 Start",
   "icons": [{
-    "src": "images/touch/Airhorner_512.png",
+    "src": "https://cdn.glitch.com/e0396011-48ac-44c9-bf55-6e11b025757d%2Fflag.png?1500283332796",
     "type": "image/png",
     "sizes": "512x512"
   }],
-  "start_url": "/?homescreen=1",
-  "scope": "/",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#2196F3",
-  "theme_color": "#2196F3"
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
 }

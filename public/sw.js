@@ -1,8 +1,19 @@
+const cacheName = 'static-v2';
+
 addEventListener('install', event => {
   skipWaiting();
   event.waitUntil(async function() {
-    const cache = await caches.open('static-v1');
+    const cache = await caches.open(cacheName);
     await cache.addAll(['/style.css', '/client.js', '/']);
+  }());
+});
+
+addEventListener('activate', event => {
+  event.waitUntil(async function() {
+    const keys = caches.keys();
+    for (const key of keys) {
+      if (key != cacheName) await caches.delete(key);
+    }
   }());
 });
 
