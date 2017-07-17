@@ -18,7 +18,7 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
-  if (request.get('X-Forwarded-Proto') == 'http') {
+  if (!request.get('X-Forwarded-Proto').includes('https')) {
     response.redirect(301, 'https://f1-start.glitch.me');
     return;
   }
