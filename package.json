@@ -10,7 +10,7 @@
     "express": "^4.16.3"
   },
   "engines": {
-    "node": "8.1.x"
+    "node": "10.2.x"
   },
   "license": "MIT"
 }
