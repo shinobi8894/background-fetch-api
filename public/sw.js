@@ -38,6 +38,7 @@ addEventListener('activate', (event) => {
 
 addEventListener('fetch', (event) => {
   event.respondWith(async function() {
+    return fetch(event.request);
     // Offline first:
     const cachedResponse = await caches.match(event.request);
     
