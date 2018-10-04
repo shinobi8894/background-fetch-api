@@ -42,16 +42,18 @@ addEventListener('fetch', (event) => {
     const cachedResponse = await caches.match(event.request);
     
     if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
-      // Create a partial response
+      // Create a partial response.
+      // At some point we'll fix caches.match to generate these.
       const blob = await cachedResponse.blob();
-      const rangeResult = /bytes=([\d+])-([\d*])/.exec(event.request.headers.get('range'));
+      const rangeResult = /bytes=(\d+)-(\d*)/.exec(event.request.headers.get('range'));
       const rangeStart = Number(rangeResult[1]);
       const rangeEnd = Number(rangeResult[2]) || blob.size - 1;
+      
       const headers = new Headers(cachedResponse.headers);
-      headers.set('Content-Range', 'bytes=')
-      return new Response(blob.slice(rangeResult[1], rangeResult[2] ? Number(rangeResult[2]) + 1 : blob.size), {
-        
-      });
+      headers.set('Content-Range', `bytes=${rangeStart}-${rangeEnd}/${blob.size}`);
+      //debugger;
+      
+      return new Response(blob.slice(rangeStart, rangeEnd + 1), { headers, status: 206 });
     }
     return cachedResponse || fetch(event.request);
   }());
