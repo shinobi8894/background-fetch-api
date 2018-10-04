@@ -14,7 +14,7 @@ const template = (state) => html`
           item.state === 'stored' ?
             html`<audio crossorigin src=${item.src}>`
           : item.state === 'fetching' ?
-            'Fetching'
+            `Fetching ${Math.round(item.progress * 100)}`
           : item.state === 'failed' ?
             'Failed'
           :

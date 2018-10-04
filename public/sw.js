@@ -45,6 +45,6 @@ addEventListener('fetch', (event) => {
 });
 
 
-addEventListener('backgroundfetchsuccess', event => {
-  const bgFetch = event.registration
-});
+/*addEventListener('backgroundfetchsuccess', event => {
+  const bgFetch = event.registration;
+});*/
