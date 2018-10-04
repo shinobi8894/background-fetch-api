@@ -42,7 +42,7 @@ function render() {
   return renderPending;
 }
 
-async function getInitialState() {
+async function getItemsFromFeed() {
   const response = await fetch('/feed');
   const dom = new DOMParser().parseFromString(await response.text(), 'text/xml');
   const itemPromises = [...dom.querySelectorAll('item')].map(async domItem => {
@@ -62,9 +62,7 @@ async function getInitialState() {
     };
   });
 
-  return {
-    items: await Promise.all(itemPromises),
-  }
+  return Promise.all(itemPromises);
 }
 
 async function updateItem(id, update) {
@@ -123,7 +121,7 @@ async function checkOngoingFetches() {
   });
 }
 
-function downloadButtonClick(event) {
+function deleteButtonClick(event) {
   const podcastEl = event.target.closest('.podcast');
   const id = podcastEl.getAttribute('data-podcast-id');
   const item = state.items.find(item => item.id === id);
@@ -131,7 +129,7 @@ function downloadButtonClick(event) {
   caches.delete(id);
 }
   
-async function deleteButtonClick(event) {
+async function downloadButtonClick(event) {
   const podcastEl = event.target.closest('.podcast');
   const id = podcastEl.getAttribute('data-podcast-id');
   const item = state.items.find(item => item.id === id);
@@ -147,7 +145,7 @@ async function deleteButtonClick(event) {
 
 async function init() {
   navigator.serviceWorker.register('/sw.js');
-  state = await getInitialState();
+  state = await getItemsFromFeed();
   render();
   if ('BackgroundFetchManager' in self) checkOngoingFetches();
 }
