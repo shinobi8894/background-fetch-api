@@ -40,6 +40,11 @@ addEventListener('fetch', (event) => {
   event.respondWith(async function() {
     // Offline first:
     const cachedResponse = await caches.match(event.request);
+    
+    if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
+      // Create a partial response
+      const blob = await cachedResponse.blob();
+    }
     return cachedResponse || fetch(event.request);
   }());
 });
