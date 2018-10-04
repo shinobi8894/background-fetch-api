@@ -43,3 +43,8 @@ addEventListener('fetch', (event) => {
     return cachedResponse || fetch(event.request);
   }());
 });
+
+
+addEventListener('backgroundfetchsuccess', event => {
+  const bgFetch = event.registration
+});
