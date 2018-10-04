@@ -12,7 +12,7 @@ const template = (state) => html`
         <img class="podcast-img" src=${item.image} width="100" height="100">
         ${
           item.state === 'stored' ?
-            html`<audio crossorigin src=${item.src}>`
+            html`<audio controls crossorigin src=${item.src}>`
           : item.state === 'fetching' ?
             `Fetching ${Math.round(item.progress * 100)}`
           : item.state === 'failed' ?
@@ -54,7 +54,7 @@ async function getInitialState() {
       image: new URL(domItem.querySelector('image').getAttribute('href'), 'https://developers.google.com/').href,
       duration: domItem.querySelector('duration').textContent,
       size: Number(domItem.querySelector('enclosure').getAttribute('length')),
-      state: await caches.has(`podcast-${id}`).then((stored) => stored ? 'stored' : 'not-stored'),
+      state: await caches.has(id).then((stored) => stored ? 'stored' : 'not-stored'),
       progress: 0,
     };
   });

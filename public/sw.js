@@ -29,7 +29,7 @@ addEventListener('activate', (event) => {
   event.waitUntil(async function() {
     // Remove old caches
     for (const cacheName of await caches.keys()) {
-      if (!cacheName.startsWith('podcast/') && cacheName !== staticCache && cacheName !== dynamicCache) {
+      if (!cacheName.startsWith('podcast-') && cacheName !== staticCache && cacheName !== dynamicCache) {
         await caches.delete(cacheName);
       }
     }
@@ -45,6 +45,19 @@ addEventListener('fetch', (event) => {
 });
 
 
-/*addEventListener('backgroundfetchsuccess', event => {
+addEventListener('backgroundfetchsuccess', event => {
   const bgFetch = event.registration;
-});*/
+  
+  event.waitUntil(async function () {
+    const cache = await caches.open(bgFetch.id);
+    const records = await bgFetch.matchAll();
+    
+    const promises = records.map(async record => {
+      await cache.put(record.request, await record.responseReady);
+    });
+    
+    await Promise.all(promises);
+    
+    new BroadcastChannel(bgFetch.id).postMessage({ stored: true });
+  }());
+});
