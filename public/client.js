@@ -6,9 +6,9 @@ const template = (items) => html`
   ${items.map(item => html`
     <section class="podcast">
       <h2>${item.title}</h2>
-    <p>${item.subtitle}</p>
-    <p>${item.id}</p>
-    <img src=${item.image} width="100" height="100">
+      <p>${item.subtitle}</p>
+      <p>${item.id}</p>
+      <img src=${item.image} width="100" height="100">
     </section>
     
   `)}
