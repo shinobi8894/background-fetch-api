@@ -55,6 +55,12 @@ addEventListener('fetch', (event) => {
       headers.set('Status', '206');
       const body = blob.slice(rangeStart, rangeEnd + 1);
       
+      console.log('range', event.request.headers.get('range'));
+      console.log('content-range', headers.get('content-range'));
+      console.log('content-length', headers.get('content-length'));
+      console.log('body size', body.size);
+      console.log('=====');
+      
       return new Response(body, { headers, status: 206, statusText: 'Partial Content' });
     }
     return cachedResponse || fetch(event.request);
