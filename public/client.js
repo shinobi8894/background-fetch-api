@@ -11,7 +11,7 @@ const template = (state) => html`
         <p class="podcast-desc">${item.subtitle}</p>
         <img class="podcast-img" src=${item.image} width="100" height="100">
         ${item.state === 'stored' ?
-          html`<audio src=${item.src}>`
+          html`<audio crossorigin src=${item.src}>`
           :
           html`<button>Download</button>`
         }
@@ -49,7 +49,7 @@ async function getInitialState() {
       image: new URL(domItem.querySelector('image').getAttribute('href'), 'https://developers.google.com/').href,
       duration: domItem.querySelector('duration').textContent,
       size: Number(domItem.querySelector('enclosure').getAttribute('length')),
-      state: await caches.has(`podcast-${id}`).then(stored => stored ? 'stored' : 'not-stored'),
+      state: await caches.has(`podcast-${id}`).then((stored) => stored ? 'stored' : 'not-stored'),
       progress: 0,
     };
   });
@@ -118,8 +118,7 @@ async function init() {
   navigator.serviceWorker.register('/sw.js');
   state = await getInitialState();
   render();
-  checkOngoingFetches();
+  if ('BackgroundFetchManager' in self) checkOngoingFetches();
 }
-
 
 init();
