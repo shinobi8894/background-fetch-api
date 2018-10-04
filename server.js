@@ -1,3 +1,4 @@
+const http = require('http');
 const express = require('express');
 const app = express();
 
@@ -11,6 +12,12 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.set('Cache-Control', 'no-cache');
   res.sendFile(__dirname + '/public/index.html');
+});
+
+app.get("/feed", (req, res) => {
+  res.set('Cache-Control', 'no-cache');
+  res.set('Content-Type', 'text/xml');
+  http.request();
 });
 
 // listen for requests :)
