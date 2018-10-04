@@ -38,11 +38,11 @@ addEventListener('activate', (event) => {
 
 addEventListener('fetch', (event) => {
   event.respondWith(async function() {
-    //return fetch(event.request);
+    
     // Offline first:
     const cachedResponse = await caches.match(event.request);
     
-    if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
+    /*if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
       // Create a partial response.
       // At some point we'll fix caches.match to generate these.
       const blob = await cachedResponse.blob();
@@ -50,7 +50,7 @@ addEventListener('fetch', (event) => {
       const rangeStart = Number(rangeResult[1]);
       const rangeEnd = Number(rangeResult[2]) || blob.size - 1;
       
-      const headers = new Headers(/*cachedResponse.headers*/);
+      const headers = new Headers(cachedResponse.headers);
       headers.set('Content-Range', `bytes ${rangeStart}-${rangeEnd}/${blob.size}`);
       headers.set('Content-Length', (rangeEnd - rangeStart) + 1);
       headers.set('Status', '206');
@@ -63,7 +63,7 @@ addEventListener('fetch', (event) => {
       console.log('=====');
       
       return new Response(body, { headers, status: 206, statusText: 'Partial Content' });
-    }
+    }*/
     return cachedResponse || fetch(event.request);
   }());
 });
