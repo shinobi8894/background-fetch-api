@@ -6,14 +6,14 @@ let state;
 const template = (state) => html`
   <div class="podcasts">
     ${state.items.map(item => html`
-      <section class="podcast" data-id=${item.id}>
+      <section class="podcast" data-podcast-id=${item.id}>
         <h2 class="podcast-title">${item.title}</h2>
         <p class="podcast-desc">${item.subtitle}</p>
         <img class="podcast-img" src=${item.image} width="100" height="100">
         ${item.state === 'stored' ?
           html`<audio crossorigin src=${item.src}>`
           :
-          html`<button>Download</button>`
+          html`<button @click=${downloadButtonClick}>Download</button>`
         }
       </section>
     `)}
@@ -114,11 +114,26 @@ async function checkOngoingFetches() {
   });
 }
 
+async function downloadButtonClick(event) {
+  const podcastEl = event.target.closest('.podcast');
+  const id = podcastEl.getAttribute('data-podcast-id');
+  const item = state.items.find(item => item.id === id);
+  updateItem(bdFetch.id, { state: 'fetching' });
+  const reg = await navigator.serviceWorker.ready;
+  const bgFetch = await reg.backgroundFetch.fetch(id, [item.src], {
+    title: item.title,
+    icons: [{ sizes: '300x300', src: item.image }],
+    downloadTotal: item.size
+  });
+  monitorBgFetch(bgFetch);
+}
+
 async function init() {
   navigator.serviceWorker.register('/sw.js');
   state = await getInitialState();
   render();
   if ('BackgroundFetchManager' in self) checkOngoingFetches();
 }
+
 
 init();
