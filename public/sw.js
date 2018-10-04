@@ -50,10 +50,12 @@ addEventListener('fetch', (event) => {
       const rangeEnd = Number(rangeResult[2]) || blob.size - 1;
       
       const headers = new Headers(cachedResponse.headers);
-      headers.set('Content-Range', `bytes=${rangeStart}-${rangeEnd}/${blob.size}`);
-      //debugger;
+      headers.set('Content-Range', `bytes ${rangeStart}-${rangeEnd}/${blob.size}`);
+      headers.set('Content-Length', (rangeEnd - rangeStart) + 1);
+      headers.set('Status', '206');
+      const body = blob.slice(rangeStart, rangeEnd + 1);
       
-      return new Response(blob.slice(rangeStart, rangeEnd + 1), { headers, status: 206 });
+      return new Response(body, { headers, status: 206, statusText: '' });
     }
     return cachedResponse || fetch(event.request);
   }());
