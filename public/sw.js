@@ -86,3 +86,7 @@ addEventListener('backgroundfetchsuccess', event => {
     new BroadcastChannel(bgFetch.id).postMessage({ stored: true });
   }());
 });
+
+addEventListener('backgroundfetchclick', event => {
+  clients.openWindow('/');
+});

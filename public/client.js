@@ -12,7 +12,10 @@ const template = (state) => html`
         <img class="podcast-img" src=${item.image} width="100" height="100">
         ${
           item.state === 'stored' ?
-            html`<audio controls crossorigin src=${item.src}>`
+            html`
+              <audio controls crossorigin src=${item.src}></audio>
+              <button @click=${deleteButtonClick}>Delete</button>
+            `
           : item.state === 'fetching' ?
             `Fetching ${Math.round(item.progress * 100)}`
           : item.state === 'failed' ?
@@ -120,7 +123,15 @@ async function checkOngoingFetches() {
   });
 }
 
-async function downloadButtonClick(event) {
+function downloadButtonClick(event) {
+  const podcastEl = event.target.closest('.podcast');
+  const id = podcastEl.getAttribute('data-podcast-id');
+  const item = state.items.find(item => item.id === id);
+  updateItem(id, { state: 'not-stored' });
+  caches.delete(id);
+}
+  
+async function deleteButtonClick(event) {
   const podcastEl = event.target.closest('.podcast');
   const id = podcastEl.getAttribute('data-podcast-id');
   const item = state.items.find(item => item.id === id);
