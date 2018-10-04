@@ -65,6 +65,7 @@ async function getInitialState() {
 }
 
 async function updateItem(id, update) {
+  debugger;
   const index = state.items.findIndex(item => item.id === id);
   if (index === -1) return;
 
@@ -89,7 +90,6 @@ async function monitorBgFetch(bgFetch) {
       update.state = 'fetching';
       update.progress = bgFetch.downloaded / bgFetch.downloadTotal;
     } else if (bgFetch.result === 'success') {
-      // Using BroadcastChannel to detect when it's fully stored
       update.state = 'fetching';
       update.progress = 1;
     } else { // Failure
