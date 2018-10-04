@@ -80,14 +80,14 @@ async function updateItem(id, update) {
 }
 
 async function monitorBgFetch(bgFetch) {
-  updateItem(bgFetch);
-
-  function listener() {
+  console.log('here');
+  function doUpdate() {
     const update = {};
+    console.log(bgFetch);
 
     if (bgFetch.result === '') {
       update.state = 'fetching';
-      update.progress = downloaded / downloadTotal;
+      update.progress = bgFetch.downloaded / bgFetch.downloadTotal;
     } else if (bgFetch.result === 'success') {
       // Using BroadcastChannel to detect when it's fully stored
       update.state = 'fetching';
@@ -98,13 +98,15 @@ async function monitorBgFetch(bgFetch) {
 
     updateItem(bgFetch.id, update);
   };
+  
+  doUpdate();
 
-  bgFetch.addEventListener('progress', listener);
+  bgFetch.addEventListener('progress', doUpdate);
   const channel = new BroadcastChannel(bgFetch.id);
 
   channel.onmessage = (event) => {
     if (!event.data.stored) return;
-    bgFetch.removeEventListener('progress', listener);
+    bgFetch.removeEventListener('progress', doUpdate);
     channel.close();
     updateItem(bgFetch.id, { state: 'stored' });
   };
@@ -113,6 +115,7 @@ async function monitorBgFetch(bgFetch) {
 async function checkOngoingFetches() {
   const reg = await navigator.serviceWorker.ready;
   const ids = await reg.backgroundFetch.getIds();
+  console.log(ids);
 
   ids.filter(id => id.startsWith('podcast-')).forEach(async (id) => {
     monitorBgFetch(await reg.backgroundFetch.get(id));
@@ -125,7 +128,7 @@ async function downloadButtonClick(event) {
   const item = state.items.find(item => item.id === id);
   updateItem(id, { state: 'fetching' });
   const reg = await navigator.serviceWorker.ready;
-  const bgFetch = await reg.backgroundFetch.fetch(id, [item.src], {
+  const bgFetch = await reg.backgroundFetch.fetch(`podcast-${id}`, [item.src], {
     title: item.title,
     icons: [{ sizes: '300x300', src: item.image }],
     downloadTotal: item.size
