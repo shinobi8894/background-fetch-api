@@ -64,6 +64,7 @@ addEventListener('fetch', (event) => {
       
       return new Response(body, { headers, status: 206, statusText: 'Partial Content' });
     }*/
+    
     return cachedResponse || fetch(event.request);
   }());
 });
