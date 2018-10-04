@@ -44,11 +44,11 @@ async function getInitialState() {
   const dom = new DOMParser().parseFromString(await response.text(), 'text/xml');
   const itemPromises = [...dom.querySelectorAll('item')].map(async domItem => {
     const src = domItem.querySelector('origEnclosureLink').textContent;
-    const id = /\/([^\/]+)\.mp3$/.exec(src)[1];
+    const id = 'podcast-' + /\/([^\/]+)\.mp3$/.exec(src)[1];
     
     return {
       src,
-      id: /\/([^\/]+)\.mp3$/.exec(src)[1],
+      id,
       title: domItem.querySelector('title').textContent,
       subtitle: domItem.querySelector('subtitle').textContent,
       image: new URL(domItem.querySelector('image').getAttribute('href'), 'https://developers.google.com/').href,
@@ -65,7 +65,6 @@ async function getInitialState() {
 }
 
 async function updateItem(id, update) {
-  debugger;
   const index = state.items.findIndex(item => item.id === id);
   if (index === -1) return;
 
@@ -81,7 +80,6 @@ async function updateItem(id, update) {
 }
 
 async function monitorBgFetch(bgFetch) {
-  console.log('here');
   function doUpdate() {
     const update = {};
     console.log(bgFetch);
@@ -128,7 +126,7 @@ async function downloadButtonClick(event) {
   const item = state.items.find(item => item.id === id);
   updateItem(id, { state: 'fetching' });
   const reg = await navigator.serviceWorker.ready;
-  const bgFetch = await reg.backgroundFetch.fetch(`podcast-${id}`, [item.src], {
+  const bgFetch = await reg.backgroundFetch.fetch(id, [item.src], {
     title: item.title,
     icons: [{ sizes: '300x300', src: item.image }],
     downloadTotal: item.size
