@@ -14,9 +14,9 @@ const template = (state) => html`
           item.state === 'stored' ?
             html`<audio crossorigin src=${item.src}>`
           : item.state === 'fetching' ?
-            Fetching
+            'Fetching'
           : item.state === 'failed' ?
-            Failed
+            'Failed'
           :
             html`<button @click=${downloadButtonClick}>Download</button>`
         }
