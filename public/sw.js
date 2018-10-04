@@ -44,6 +44,14 @@ addEventListener('fetch', (event) => {
     if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
       // Create a partial response
       const blob = await cachedResponse.blob();
+      const rangeResult = /bytes=([\d+])-([\d*])/.exec(event.request.headers.get('range'));
+      const rangeStart = Number(rangeResult[1]);
+      const rangeEnd = Number(rangeResult[2]) || blob.size - 1;
+      const headers = new Headers(cachedResponse.headers);
+      headers.set('Content-Range', 'bytes=')
+      return new Response(blob.slice(rangeResult[1], rangeResult[2] ? Number(rangeResult[2]) + 1 : blob.size), {
+        
+      });
     }
     return cachedResponse || fetch(event.request);
   }());
