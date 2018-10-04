@@ -42,8 +42,7 @@ function render() {
   return renderPending;
 }
 
-async function getItemsFromFeed() {
-  const response = await fetch('/feed');
+async function getItemsFromFeed(response) {
   const dom = new DOMParser().parseFromString(await response.text(), 'text/xml');
   const itemPromises = [...dom.querySelectorAll('item')].map(async domItem => {
     const src = domItem.querySelector('origEnclosureLink').textContent;
@@ -145,8 +144,21 @@ async function downloadButtonClick(event) {
 
 async function init() {
   navigator.serviceWorker.register('/sw.js');
-  state = await getItemsFromFeed();
-  render();
+  
+  // Look for cached feed
+  const cache = await caches.open('dynamic');
+  const cachedFeed = await cache.match('/feed');
+  
+  if (cachedFeed) {
+    state = { items: await getItemsFromFeed(cachedFeed) };
+    render();
+    if ('BackgroundFetchManager' in self) checkOngoingFetches();
+  }
+  
+  const networkFeed = await fetch('/feed');
+  const networkFeedClone = networkFeed.clone();
+  await cache.put();
+  
   if ('BackgroundFetchManager' in self) checkOngoingFetches();
 }
 

@@ -37,6 +37,11 @@ addEventListener('activate', (event) => {
 });
 
 addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+  
+  // Skip the service worker for the feed. The page handles the caching.
+  if (url.origin === location.origin && url.pathname === '/feed') return;
+  
   event.respondWith(async function() {
     
     // Offline first:
