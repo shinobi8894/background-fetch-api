@@ -38,7 +38,7 @@ addEventListener('activate', (event) => {
 
 addEventListener('fetch', (event) => {
   event.respondWith(async function() {
-    return fetch(event.request);
+    //return fetch(event.request);
     // Offline first:
     const cachedResponse = await caches.match(event.request);
     
@@ -50,7 +50,7 @@ addEventListener('fetch', (event) => {
       const rangeStart = Number(rangeResult[1]);
       const rangeEnd = Number(rangeResult[2]) || blob.size - 1;
       
-      const headers = new Headers(cachedResponse.headers);
+      const headers = new Headers(/*cachedResponse.headers*/);
       headers.set('Content-Range', `bytes ${rangeStart}-${rangeEnd}/${blob.size}`);
       headers.set('Content-Length', (rangeEnd - rangeStart) + 1);
       headers.set('Status', '206');
