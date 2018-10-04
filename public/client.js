@@ -1,7 +1,7 @@
 import { html, render as litRender } from '/lit/lit-html.js';
 
 const app = document.querySelector('.app');
-let state;
+let state = { items: [] };
 
 const template = (state) => html`
   <div class="podcasts">
@@ -150,14 +150,26 @@ async function init() {
   const cachedFeed = await cache.match('/feed');
   
   if (cachedFeed) {
-    state = { items: await getItemsFromFeed(cachedFeed) };
+    state = { ...state, items: await getItemsFromFeed(cachedFeed) };
     render();
     if ('BackgroundFetchManager' in self) checkOngoingFetches();
   }
   
   const networkFeed = await fetch('/feed');
-  const networkFeedClone = networkFeed.clone();
-  await cache.put();
+  
+  if (networkFeed.ok) {
+    cache.put('/feed', networkFeed.clone());
+    const newItems = (await getItemsFromFeed(networkFeed)).filter(item => !state.items.find(i => i.id === item.id));
+    
+    if (newItems.length > 0) {
+      state = {
+        ...state,
+        items: [...newItems, ...state.items],
+      };
+      render();
+    }
+  }
+  
   
   if ('BackgroundFetchManager' in self) checkOngoingFetches();
 }
