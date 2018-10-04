@@ -17,7 +17,18 @@ app.get("/", (req, res) => {
 app.get("/feed", (req, res) => {
   res.set('Cache-Control', 'no-cache');
   res.set('Content-Type', 'text/xml');
-  http.request();
+  console.log('requesting');
+  const httpReq = http.request('http://feeds.feedburner.com/Http203Podcast', (httpRes) => {
+    console.log('hey');
+    res.status(httpRes.statusCode);
+    httpRes.pipe(res);
+  });
+  
+  httpReq.on('error', (e) => {
+    res.status(500).end();
+  });
+  
+  httpReq.end();
 });
 
 // listen for requests :)
