@@ -1,24 +1,26 @@
 const version = '1.0.0';
 const staticCache = `static-${version}`;
+const dynamicCache = 'dynamic'
 
 
 addEventListener('install', (event) => {
   event.waitUntil(async function() {
     const cache = await caches.open(staticCache);
     await cache.addAll([
-      "https://bgfetch-http203.glitch.me/client.js",
-      "https://bgfetch-http203.glitch.me/all.css",
-      "https://bgfetch-http203.glitch.me/lit/lit-html.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/default-template-processor.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/template-result.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/template.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/template-instance.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/part.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/parts.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/dom.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/render.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/directive.js",
-      "https://bgfetch-http203.glitch.me/lit/lib/template-factory.js"
+      "/",
+      "/client.js",
+      "/all.css",
+      "/lit/lit-html.js",
+      "/lit/lib/default-template-processor.js",
+      "/lit/lib/template-result.js",
+      "/lit/lib/template.js",
+      "/lit/lib/template-instance.js",
+      "/lit/lib/part.js",
+      "/lit/lib/parts.js",
+      "/lit/lib/dom.js",
+      "/lit/lib/render.js",
+      "/lit/lib/directive.js",
+      "/lit/lib/template-factory.js"
     ]);
   }());
 });
@@ -27,7 +29,7 @@ addEventListener('activate', (event) => {
   event.waitUntil(async function() {
     // Remove old caches
     for (const cacheName of await caches.keys()) {
-      if (!cacheName.startsWith('podcast/') && cacheName !== staticCache) {
+      if (!cacheName.startsWith('podcast/') && cacheName !== staticCache && cacheName !== dynamicCache) {
         await caches.delete(cacheName);
       }
     }
@@ -36,6 +38,8 @@ addEventListener('activate', (event) => {
 
 addEventListener('fetch', (event) => {
   event.respondWith(async function() {
-    // Cache
+    // Offline first:
+    const cachedResponse = await caches.match(event.request);
+    return cachedResponse || fetch(event.request);
   }());
 });

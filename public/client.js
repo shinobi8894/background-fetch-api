@@ -4,10 +4,13 @@ const app = document.querySelector('.app');
 
 const template = (items) => html`
   ${items.map(item => html`
-    <h2>${item.title}</h2>
+    <section class="podcast">
+      <h2>${item.title}</h2>
     <p>${item.subtitle}</p>
     <p>${item.id}</p>
     <img src=${item.image} width="100" height="100">
+    </section>
+    
   `)}
 `;
 
@@ -34,3 +37,5 @@ async function fetchFeed() {
 }
 
 fetchFeed().then(items => render(items));
+
+navigator.serviceWorker.register('/sw.js');

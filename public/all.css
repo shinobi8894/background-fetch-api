@@ -1,0 +1,13 @@
+html, body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.site-title {
+  margin: 0;
+  font-weight: normal;
+  font-size: 20px;
+  background: #42ab54;
+  color: #fff;
+  padding: 20px;
+}
