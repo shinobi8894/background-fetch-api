@@ -4,7 +4,8 @@
   "scope": "./",
   "icons": [{
     "src": "https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Ficon.jpg?1538739694463",
-    "sizes": "512x512"
+    "sizes": "512x512",
+    "type": "image/jpeg"
   }],
   "background_color": "#fff",
   "display": "standalone",
