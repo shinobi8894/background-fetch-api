@@ -1,7 +1,7 @@
 import { html, render as litRender } from '/lit/lit-html.js';
 
 const app = document.querySelector('.app');
-let state = { items: [] };
+let state = { items: [], currentlyPlayingId: '', };
 
 const template = (state) => html`
   <div class="podcasts">
@@ -152,7 +152,6 @@ async function init() {
   if (cachedFeed) {
     state = { ...state, items: await getItemsFromFeed(cachedFeed) };
     render();
-    if ('BackgroundFetchManager' in self) checkOngoingFetches();
   }
   
   const networkFeed = await fetch('/feed');
@@ -170,8 +169,6 @@ async function init() {
     }
   }
   
-  
-  if ('BackgroundFetchManager' in self) checkOngoingFetches();
 }
 
 
