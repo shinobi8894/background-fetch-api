@@ -92,6 +92,7 @@ async function getItemsFromFeed(response) {
     return {
       src,
       id,
+      image: domItem.querySelector('image').getAttribute('href'),
       title: domItem.querySelector('title').textContent,
       subtitle: domItem.querySelector('subtitle').textContent,
       duration: domItem.querySelector('duration').textContent,
@@ -122,7 +123,8 @@ async function updateItem(id, update) {
 async function monitorBgFetch(bgFetch) {
   function doUpdate() {
     const update = {};
-    console.log(bgFetch);
+    
+    if (bgFetch.result === 'failure') debugger;
 
     if (bgFetch.result === '') {
       update.state = 'fetching';
@@ -130,8 +132,9 @@ async function monitorBgFetch(bgFetch) {
     } else if (bgFetch.result === 'success') {
       update.state = 'fetching';
       update.progress = 1;
-    } else { // Failure
-      if (
+    } else if (bgFetch.failureReason === 'aborted') { // Failure
+      update.state = 'not-stored';
+    } else { // other failure
       update.state = 'failed';
     }
 
@@ -154,7 +157,6 @@ async function monitorBgFetch(bgFetch) {
 async function checkOngoingFetches() {
   const reg = await navigator.serviceWorker.ready;
   const ids = await reg.backgroundFetch.getIds();
-  console.log(ids);
 
   ids.filter(id => id.startsWith('podcast-')).forEach(async (id) => {
     monitorBgFetch(await reg.backgroundFetch.get(id));
