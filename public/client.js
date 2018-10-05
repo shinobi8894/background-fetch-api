@@ -3,30 +3,34 @@ import { html, render as litRender } from '/lit/lit-html.js';
 const app = document.querySelector('.app');
 let state = { items: [], currentlyPlayingId: '', };
 
-const template = (state) => html`
-  <div class="podcasts">
-    ${state.items.map(item => html`
-      <section class="podcast" data-podcast-id=${item.id}>
-        <h2 class="podcast-title">${item.title}</h2>
-        <p class="podcast-desc">${item.subtitle}</p>
-        <img class="podcast-img" src=${item.image} width="100" height="100">
-        ${
-          item.state === 'stored' ?
-            html`
-              <audio controls crossorigin src=${item.src}></audio>
-              <button @click=${deleteButtonClick}>Delete</button>
-            `
-          : item.state === 'fetching' ?
-            `Fetching ${Math.round(item.progress * 100)}`
-          : item.state === 'failed' ?
-            'Failed'
-          :
-            html`<button @click=${downloadButtonClick}>Download</button>`
-        }
-      </section>
-    `)}
-  </div>
-`;
+function template({ items, currentlyPlayingId }) {
+  const currentlyPlaying = currentlyPlayingId && items.find(item => item.id === currentlyPlayingId);
+  
+  return html`
+    <div class="podcasts">
+      ${state.items.map(item => html`
+        <section class="podcast" data-podcast-id=${item.id}>
+          <h2 class="podcast-title">${item.title}</h2>
+          <p class="podcast-desc">${item.subtitle}</p>
+          <img class="podcast-img" src=${item.image} width="100" height="100">
+          ${
+            item.state === 'stored' ?
+              html`
+                <audio controls crossorigin src=${item.src}></audio>
+                <button @click=${deleteButtonClick}>Delete</button>
+              `
+            : item.state === 'fetching' ?
+              `Fetching ${Math.round(item.progress * 100)}`
+            : item.state === 'failed' ?
+              'Failed'
+            :
+              html`<button @click=${downloadButtonClick}>Download</button>`
+          }
+        </section>
+      `)}
+    </div>
+  `;
+}
 
 let renderPending;
 
@@ -153,6 +157,8 @@ async function init() {
     state = { ...state, items: await getItemsFromFeed(cachedFeed) };
     render();
   }
+  
+  if ('BackgroundFetchManager' in self) checkOngoingFetches();
   
   const networkFeed = await fetch('/feed');
   
