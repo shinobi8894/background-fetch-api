@@ -67,7 +67,7 @@ html, body {
   --size: 53px;
   width: var(--size);
   height: var(--size);
-  padding-right: 15px;
+  padding-right: 10px;
 }
 
 @keyframes action-enter {
@@ -81,12 +81,25 @@ html, body {
 .action-dl,
 .action-abort,
 .action-del,
-.action-error,
-.action-progress {
+.action-error {
   transform-box: fill-box;
+  transform-origin: 50% 50%;
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.action-progress {
+  --progress: 0;
+  opacity: 1;
+  stroke-dasharray: 0 113 500;
+  stroke-dashoffset: calc(var(--progress) * 113);
+  transform-box: fill-box;
+  transform: rotate(90deg) scaleX(-1);
   transform-origin: 50% 50%;
 }
 
 .action-on {
-  
+  opacity: 1;
+  transform: none;
+  animation: action-enter 0.5s;
 }

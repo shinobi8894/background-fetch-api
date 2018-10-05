@@ -8,7 +8,8 @@ function template({ items, currentlyPlayingId }) {
   
   return html`
     <div class="podcasts">
-      ${state.items.map(item => html`
+      ${state.items.map(item => {
+        return html`
         <section class="podcast" data-podcast-id=${item.id}>
           <button class="podcast-titles" @click=${onPodcastClick}>
             <h2 class="podcast-title">${item.title}</h2>
@@ -18,7 +19,7 @@ function template({ items, currentlyPlayingId }) {
           <button class="action-button">
             <svg viewBox="0 0 39 39">
               <title>TODO</title>
-              <path class="action-dl" d="M26.5,18.5v7h-14v-7h-2v7a2,2,0,0,0,2,2h14a2,2,0,0,0,2-2v-7Zm-6,.67,2.59-2.58L24.5,18l-5,5-5-5,1.41-1.41,2.59,2.58V9.5h2Z"/>
+              <path class="action-dl action-on" d="M26.5,18.5v7h-14v-7h-2v7a2,2,0,0,0,2,2h14a2,2,0,0,0,2-2v-7Zm-6,.67,2.59-2.58L24.5,18l-5,5-5-5,1.41-1.41,2.59,2.58V9.5h2Z"/>
               <circle class="action-progress" cx="19.5" cy="19.5" r="18" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="3"/>
               <path class="action-abort" d="M19.5,9.5a10,10,0,1,0,10,10A10,10,0,0,0,19.5,9.5Zm5,13.59L23.09,24.5,19.5,20.91,15.91,24.5,14.5,23.09l3.59-3.59L14.5,15.91l1.41-1.41,3.59,3.59,3.59-3.59,1.41,1.41L20.91,19.5Z"/>
               <path class="action-del" d="M13.5,26.5a2,2,0,0,0,2,2h8a2,2,0,0,0,2-2v-12h-12Zm13-15H23l-1-1H17l-1,1H12.5v2h14Z"/>
@@ -37,7 +38,8 @@ function template({ items, currentlyPlayingId }) {
               html`<button @click=${onDownloadButtonClick}>Download</button>`
           */ undefined}
         </section>
-      `)}
+        `
+  })}
     </div>
     ${currentlyPlaying && html`
       <div class="player">
