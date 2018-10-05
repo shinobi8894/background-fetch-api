@@ -60,6 +60,7 @@ html, body {
 
 .player audio {
   width: 100%;
+  display: block;
 }
 
 .player::before {
@@ -78,6 +79,30 @@ html, body {
   border-bottom: 1px solid #eaeaea;
   align-items: center;
   cursor: pointer;
+  position: relative;
+}
+
+.podcast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.podcast:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
 }
 
 .podcast-titles {
@@ -87,6 +112,7 @@ html, body {
   overflow: hidden;
   line-height: 1.5;
   color: #333;
+  position: relative;
 }
 
 .podcast-title,
@@ -110,6 +136,7 @@ html, body {
   height: var(--size);
   padding-right: 10px;
   cursor: pointer;
+  position: relative;
 }
 
 @keyframes action-enter {
