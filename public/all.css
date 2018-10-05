@@ -15,6 +15,13 @@ html, body {
   -webkit-overflow-scrolling: touch;
 }
 
+.limit-width {
+  position: relative;
+  transform-style: preserve-3d;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .parallax-child {
   top: 0px;
   transform: translateZ(-2px) scale(3);

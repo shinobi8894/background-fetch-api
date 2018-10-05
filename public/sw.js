@@ -54,6 +54,8 @@ addEventListener('fetch', (event) => {
     // Offline first:
     const cachedResponse = await caches.match(event.request);
     
+    // Generate partial responses
+    // Blocked on https://bugs.chromium.org/p/chromium/issues/detail?id=892227
     /*if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
       // Create a partial response.
       // At some point we'll fix caches.match to generate these.
