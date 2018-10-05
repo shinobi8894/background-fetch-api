@@ -15,18 +15,27 @@ html, body {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   background: #696969; /* nicenicenice */
+  
+  display: flex;
+  flex-flow: column;
 }
 
 .limit-width {
   position: relative;
   max-width: 800px;
   margin: 0 auto;
-  transform: translateZ(0); /* fixes Chrome bug */ 
+  transform: translateZ(0); /* fixes Chrome bug */
+  min-height: 100%;
+  background: #fff;
 }
 
 .parallax-child {
   transform: translateZ(-2px) scale(3);
   transform-origin: 0 0;
+}
+
+.app {
+  flex: 1;
 }
 
 .site-title {
