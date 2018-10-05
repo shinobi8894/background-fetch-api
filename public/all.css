@@ -34,8 +34,9 @@ html, body {
 
 .podcast {
   display: grid;
-  grid-template-columns: auto 59px;
+  grid-template-columns: auto min-content;
   border-bottom: 1px solid #eaeaea;
+  align-items: center;
 }
 
 .podcast-titles {
@@ -63,7 +64,29 @@ html, body {
 
 .action-button {
   all: unset;
-  width: 39px;
-  height: 39px;
-  padding: 10px;
+  --size: 53px;
+  width: var(--size);
+  height: var(--size);
+  padding-right: 15px;
+}
+
+@keyframes action-enter {
+  from {
+    transform: rotate(-90deg);
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+}
+
+.action-dl,
+.action-abort,
+.action-del,
+.action-error,
+.action-progress {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.action-on {
+  
 }
