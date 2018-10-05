@@ -41,7 +41,7 @@ html, body {
 .podcast-titles {
   all: unset;
   display: block;
-  padding: 20px;
+  padding: 16px 20px;
   overflow: hidden;
   line-height: 1.5;
   color: #333;
@@ -51,10 +51,12 @@ html, body {
 .podcast-subtitle {
   all: unset;
   display: block;
-  padding: 16px 20px;
+  white-space: nowrap;
   overflow: hidden; 
+  text-overflow: ellipsis;
 }
 
 .podcast-subtitle {
-  
+  color: #888;
+  font-size: 0.9rem;
 }
