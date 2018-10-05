@@ -9,51 +9,54 @@ function template({ items, currentlyPlayingId }) {
   const currentlyPlaying = currentlyPlayingId && items.find(item => item.id === currentlyPlayingId);
   
   return html`
-    <div class=${`podcasts ${firstRender ? 'no-anim' : ''}`}>
-      ${state.items.map(item => {
-        let activeItem;
-        let buttonClickListener;
-        let progress = 0;
-        let alt;
-        
-        if (item.state === 'stored') {
-          alt = 'Delete';
-          activeItem = 'del';
-          buttonClickListener = onDeleteButtonClick;
-        } else if (item.state === 'fetching') {
-          alt = 'Abort';
-          activeItem = 'abort';
-          buttonClickListener = onAbortButtonClick;
-          progress = item.progress;
-        } else if (item.state === 'failed') {
-          alt = 'Error';
-          activeItem = 'error';
-        } else {
-          alt = 'Download';
-          activeItem = 'dl';
-          buttonClickListener = onDownloadButtonClick;
-        }
-    
-        return html`
-          <section class="podcast" data-podcast-id=${item.id}>
-            <button class="podcast-titles" @click=${onPodcastClick}>
-              <h2 class="podcast-title">${item.title}</h2>
-              <p class="podcast-subtitle">${item.subtitle}</p>
-            </button>
+    <div class="limit-width">
+      <div class=${`podcasts ${firstRender ? 'no-anim' : ''}`}>
+        ${state.items.map(item => {
+          let activeItem;
+          let buttonClickListener;
+          let progress = 0;
+          let alt;
 
-            <button class="action-button" @click=${buttonClickListener}>
-              <svg viewBox="0 0 39 39">
-                <title>TODO</title>
-                <circle class="action-progress" style=${`--progress: ${progress}`} cx="19.5" cy="19.5" r="18" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="3"/>
-                <path class=${`action-dl action-${activeItem === 'dl' ? 'on' : 'off'}`} d="M26.5,18.5v7h-14v-7h-2v7a2,2,0,0,0,2,2h14a2,2,0,0,0,2-2v-7Zm-6,.67,2.59-2.58L24.5,18l-5,5-5-5,1.41-1.41,2.59,2.58V9.5h2Z"/>
-                <path class=${`action-abort action-${activeItem === 'abort' ? 'on' : 'off'}`} d="M19.5,9.5a10,10,0,1,0,10,10A10,10,0,0,0,19.5,9.5Zm5,13.59L23.09,24.5,19.5,20.91,15.91,24.5,14.5,23.09l3.59-3.59L14.5,15.91l1.41-1.41,3.59,3.59,3.59-3.59,1.41,1.41L20.91,19.5Z"/>
-                <path class=${`action-del action-${activeItem === 'del' ? 'on' : 'off'}`} d="M13.5,26.5a2,2,0,0,0,2,2h8a2,2,0,0,0,2-2v-12h-12Zm13-15H23l-1-1H17l-1,1H12.5v2h14Z"/>
-                <path class=${`action-error action-${activeItem === 'error' ? 'on' : 'off'}`} d="M18.5,22.5h2v2h-2Zm0-8h2v6h-2Zm1-5a10,10,0,1,0,10,10A10,10,0,0,0,19.49,9.5Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,19.5,27.5Z"/>
-              </svg>
-            </button>
-          </section>
-        `;
-      })}
+          if (item.state === 'stored') {
+            alt = 'Delete';
+            activeItem = 'del';
+            buttonClickListener = onDeleteButtonClick;
+            progress = 1;
+          } else if (item.state === 'fetching') {
+            alt = 'Abort';
+            activeItem = 'abort';
+            buttonClickListener = onAbortButtonClick;
+            progress = item.progress;
+          } else if (item.state === 'failed') {
+            alt = 'Error';
+            activeItem = 'error';
+          } else {
+            alt = 'Download';
+            activeItem = 'dl';
+            buttonClickListener = onDownloadButtonClick;
+          }
+
+          return html`
+            <section class="podcast" data-podcast-id=${item.id}>
+              <button class="podcast-titles" @click=${onPodcastClick}>
+                <h2 class="podcast-title">${item.title}</h2>
+                <p class="podcast-subtitle">${item.subtitle}</p>
+              </button>
+
+              <button class="action-button" @click=${buttonClickListener}>
+                <svg viewBox="0 0 39 39">
+                  <title>${alt}</title>
+                  <circle class="action-progress" style=${`--progress: ${progress}`} cx="19.5" cy="19.5" r="18" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="3"/>
+                  <path class=${`action-dl action-${activeItem === 'dl' ? 'on' : 'off'}`} d="M26.5,18.5v7h-14v-7h-2v7a2,2,0,0,0,2,2h14a2,2,0,0,0,2-2v-7Zm-6,.67,2.59-2.58L24.5,18l-5,5-5-5,1.41-1.41,2.59,2.58V9.5h2Z"/>
+                  <path class=${`action-abort action-${activeItem === 'abort' ? 'on' : 'off'}`} d="M19.5,9.5a10,10,0,1,0,10,10A10,10,0,0,0,19.5,9.5Zm5,13.59L23.09,24.5,19.5,20.91,15.91,24.5,14.5,23.09l3.59-3.59L14.5,15.91l1.41-1.41,3.59,3.59,3.59-3.59,1.41,1.41L20.91,19.5Z"/>
+                  <path class=${`action-del action-${activeItem === 'del' ? 'on' : 'off'}`} d="M13.5,26.5a2,2,0,0,0,2,2h8a2,2,0,0,0,2-2v-12h-12Zm13-15H23l-1-1H17l-1,1H12.5v2h14Z"/>
+                  <path class=${`action-error action-${activeItem === 'error' ? 'on' : 'off'}`} d="M18.5,22.5h2v2h-2Zm0-8h2v6h-2Zm1-5a10,10,0,1,0,10,10A10,10,0,0,0,19.49,9.5Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,19.5,27.5Z"/>
+                </svg>
+              </button>
+            </section>
+          `;
+        })}
+      </div>
     </div>
     ${currentlyPlaying && html`
       <div class="player">

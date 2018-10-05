@@ -14,6 +14,7 @@ html, body {
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  background: #696969; /* nicenicenice */
 }
 
 .limit-width {
@@ -44,12 +45,12 @@ html, body {
   display: block;
 }
 
-.app {
+.podcasts {
   position: relative;
   background: #fff;
 }
 
-.app::before {
+.podcasts::before {
   content: '';
   position: absolute;
   bottom: 100%;
