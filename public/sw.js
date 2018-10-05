@@ -1,9 +1,11 @@
-const version = '1.0.0';
+const version = '1.0.1';
 const staticCache = `static-${version}`;
 const dynamicCache = 'dynamic'
 
 
 addEventListener('install', (event) => {
+  skipWaiting();
+  
   event.waitUntil(async function() {
     const cache = await caches.open(staticCache);
     await cache.addAll([
@@ -32,6 +34,11 @@ addEventListener('activate', (event) => {
       if (!cacheName.startsWith('podcast-') && cacheName !== staticCache && cacheName !== dynamicCache) {
         await caches.delete(cacheName);
       }
+    }
+    
+    // A pretty harsh way to handle updates, but it's just a demo.
+    for (const client of await clients.matchAll()) {
+      client.navigate(client.url);
     }
   }());
 });
