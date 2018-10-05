@@ -14,8 +14,19 @@ function template({ items, currentlyPlayingId }) {
             <h2 class="podcast-title">${item.title}</h2>
             <p class="podcast-subtitle">${item.subtitle}</p>
           </button>
+
+          <button class="action-button">
+            <svg viewBox="0 0 39 39">
+              <title>TODO</title>
+              <path d="M26.5,18.5v7h-14v-7h-2v7a2,2,0,0,0,2,2h14a2,2,0,0,0,2-2v-7Zm-6,.67,2.59-2.58L24.5,18l-5,5-5-5,1.41-1.41,2.59,2.58V9.5h2Z"/>
+              <circle cx="19.5" cy="19.5" r="18" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="3"/>
+              <path d="M19.5,9.5a10,10,0,1,0,10,10A10,10,0,0,0,19.5,9.5Zm5,13.59L23.09,24.5,19.5,20.91,15.91,24.5,14.5,23.09l3.59-3.59L14.5,15.91l1.41-1.41,3.59,3.59,3.59-3.59,1.41,1.41L20.91,19.5Z"/>
+              <path d="M13.5,26.5a2,2,0,0,0,2,2h8a2,2,0,0,0,2-2v-12h-12Zm13-15H23l-1-1H17l-1,1H12.5v2h14Z"/>
+              <path d="M18.5,22.5h2v2h-2Zm0-8h2v6h-2Zm1-5a10,10,0,1,0,10,10A10,10,0,0,0,19.49,9.5Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,19.5,27.5Z"/>
+            </svg>
+          </button>
           
-          ${
+          ${/*
             item.state === 'stored' ?
               html`<button @click=${onDeleteButtonClick}>Delete</button>`
             : item.state === 'fetching' ?
@@ -24,7 +35,7 @@ function template({ items, currentlyPlayingId }) {
               'Failed'
             :
               html`<button @click=${onDownloadButtonClick}>Download</button>`
-          }
+          */ undefined}
         </section>
       `)}
     </div>

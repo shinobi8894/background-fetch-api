@@ -34,7 +34,7 @@ html, body {
 
 .podcast {
   display: grid;
-  grid-template-columns: auto 100px;
+  grid-template-columns: auto 59px;
   border-bottom: 1px solid #eaeaea;
 }
 
@@ -59,4 +59,11 @@ html, body {
 .podcast-subtitle {
   color: #888;
   font-size: 0.9rem;
+}
+
+.action-button {
+  all: unset;
+  width: 39px;
+  height: 39px;
+  padding: 10px;
 }
