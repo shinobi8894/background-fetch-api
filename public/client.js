@@ -231,6 +231,10 @@ function onPodcastClick(event) {
 
 async function init() {
   navigator.serviceWorker.register('/sw.js');
+  // Attempt persistent storage
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist();
+  }
   
   // Look for cached feed
   const cache = await caches.open('dynamic');
