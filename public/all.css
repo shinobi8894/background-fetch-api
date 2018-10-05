@@ -6,24 +6,23 @@ html, body {
 }
 
 .container {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   perspective-origin: 0 0;
   perspective: 1px;
   
+  overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
 
 .limit-width {
   position: relative;
-  transform-style: preserve-3d;
   max-width: 800px;
   margin: 0 auto;
 }
 
 .parallax-child {
-  top: 0px;
   transform: translateZ(-2px) scale(3);
   transform-origin: 0 0;
 }
