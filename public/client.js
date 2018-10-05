@@ -9,26 +9,28 @@ function template({ items, currentlyPlayingId }) {
   return html`
     <div class="podcasts">
       ${state.items.map(item => html`
-        <section class="podcast" data-podcast-id=${item.id}>
+        <section class="podcast" data-podcast-id=${item.id} role="buttom" tabindex="0" @click=${onPodcastClick}>
           <h2 class="podcast-title">${item.title}</h2>
           <p class="podcast-desc">${item.subtitle}</p>
           <img class="podcast-img" src=${item.image} width="100" height="100">
           ${
             item.state === 'stored' ?
-              html`
-                <audio controls crossorigin src=${item.src}></audio>
-                <button @click=${deleteButtonClick}>Delete</button>
-              `
+              html`<button @click=${onDeleteButtonClick}>Delete</button>`
             : item.state === 'fetching' ?
               `Fetching ${Math.round(item.progress * 100)}`
             : item.state === 'failed' ?
               'Failed'
             :
-              html`<button @click=${downloadButtonClick}>Download</button>`
+              html`<button @click=${onDownloadButtonClick}>Download</button>`
           }
         </section>
       `)}
     </div>
+    ${currentlyPlaying && html`
+      <div class="player">
+        <audio controls crossorigin src=${currentlyPlaying.src}></audio>
+      </div>
+    `}
   `;
 }
 
@@ -124,7 +126,7 @@ async function checkOngoingFetches() {
   });
 }
 
-function deleteButtonClick(event) {
+function onDeleteButtonClick(event) {
   const podcastEl = event.target.closest('.podcast');
   const id = podcastEl.getAttribute('data-podcast-id');
   const item = state.items.find(item => item.id === id);
@@ -132,7 +134,7 @@ function deleteButtonClick(event) {
   caches.delete(id);
 }
   
-async function downloadButtonClick(event) {
+async function onDownloadButtonClick(event) {
   const podcastEl = event.target.closest('.podcast');
   const id = podcastEl.getAttribute('data-podcast-id');
   const item = state.items.find(item => item.id === id);
@@ -144,6 +146,14 @@ async function downloadButtonClick(event) {
     downloadTotal: item.size
   });
   monitorBgFetch(bgFetch);
+}
+  
+function onPodcastClick(event) {
+  const podcastEl = event.target.closest('.podcast');
+  const id = podcastEl.getAttribute('data-podcast-id');
+  
+  state = { ...state, currentlyPlayingId: id };
+  render();
 }
 
 async function init() {
