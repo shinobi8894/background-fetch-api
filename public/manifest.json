@@ -1,0 +1,13 @@
+{
+  "name": "HTTP203",
+  "short_name": "HTTP203",
+  "scope": "./",
+  "icons": [{
+    "src": "https://developers.google.com/web/shows/http203/podcast/images/surma-and-jake-2.jpg",
+    "sizes": "300x300"
+  }],
+  "background_color": "#fff",
+  "display": "standalone",
+  "start_url": "./",
+  "theme_color": "#c8b0a6"
+}

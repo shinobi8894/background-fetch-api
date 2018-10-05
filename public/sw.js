@@ -1,4 +1,4 @@
-const version = '1.0.1';
+const version = '1.0.0';
 const staticCache = `static-${version}`;
 const dynamicCache = 'dynamic'
 
