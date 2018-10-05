@@ -13,17 +13,22 @@ function template({ items, currentlyPlayingId }) {
         let activeItem;
         let buttonClickListener;
         let progress = 0;
+        let alt;
         
         if (item.state === 'stored') {
+          alt = 'Delete';
           activeItem = 'del';
           buttonClickListener = onDeleteButtonClick;
         } else if (item.state === 'fetching') {
+          alt = 'Abort';
           activeItem = 'abort';
           buttonClickListener = onAbortButtonClick;
           progress = item.progress;
         } else if (item.state === 'failed') {
+          alt = 'Error';
           activeItem = 'error';
         } else {
+          alt = 'Download';
           activeItem = 'dl';
           buttonClickListener = onDownloadButtonClick;
         }
@@ -45,17 +50,6 @@ function template({ items, currentlyPlayingId }) {
                 <path class=${`action-error action-${activeItem === 'error' ? 'on' : 'off'}`} d="M18.5,22.5h2v2h-2Zm0-8h2v6h-2Zm1-5a10,10,0,1,0,10,10A10,10,0,0,0,19.49,9.5Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,19.5,27.5Z"/>
               </svg>
             </button>
-
-            ${/*
-              item.state === 'stored' ?
-                html`<button @click=${onDeleteButtonClick}>Delete</button>`
-              : item.state === 'fetching' ?
-                `Fetching ${Math.round(item.progress * 100)}`
-              : item.state === 'failed' ?
-                'Failed'
-              :
-                html`<button @click=${onDownloadButtonClick}>Download</button>`
-            */ undefined}
           </section>
         `;
       })}
@@ -123,8 +117,6 @@ async function updateItem(id, update) {
 async function monitorBgFetch(bgFetch) {
   function doUpdate() {
     const update = {};
-    
-    if (bgFetch.result === 'failure') debugger;
 
     if (bgFetch.result === '') {
       update.state = 'fetching';
@@ -176,7 +168,8 @@ async function onAbortButtonClick(event) {
   const id = podcastEl.getAttribute('data-podcast-id');
   const reg = await navigator.serviceWorker.ready;
   const bgFetch = await reg.backgroundFetch.get(id);
-  bgFetch.abort();
+  await bgFetch.abort();
+  updateItem(id, { state: 'not-stored' });
 }
   
 async function onDownloadButtonClick(event) {

@@ -37,6 +37,7 @@ html, body {
   grid-template-columns: auto min-content;
   border-bottom: 1px solid #eaeaea;
   align-items: center;
+  cursor: pointer;
 }
 
 .podcast-titles {
@@ -68,6 +69,7 @@ html, body {
   width: var(--size);
   height: var(--size);
   padding-right: 10px;
+  cursor: pointer;
 }
 
 @keyframes action-enter {
@@ -85,7 +87,6 @@ html, body {
     animation-timing-function: ease-out;
   }
 }
-
 
 .action-dl,
 .action-abort,
