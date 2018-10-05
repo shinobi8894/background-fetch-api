@@ -3,8 +3,8 @@
   "short_name": "HTTP203",
   "scope": "./",
   "icons": [{
-    "src": "https://developers.google.com/web/shows/http203/podcast/images/surma-and-jake-2.jpg",
-    "sizes": "300x300"
+    "src": "https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Ficon.jpg?1538739694463",
+    "sizes": "512x512"
   }],
   "background_color": "#fff",
   "display": "standalone",

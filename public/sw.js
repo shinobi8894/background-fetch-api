@@ -1,4 +1,4 @@
-const version = '1.0.0';
+const version = '1.1.0';
 const staticCache = `static-${version}`;
 const dynamicCache = 'dynamic'
 
@@ -65,16 +65,9 @@ addEventListener('fetch', (event) => {
       const headers = new Headers(cachedResponse.headers);
       headers.set('Content-Range', `bytes ${rangeStart}-${rangeEnd}/${blob.size}`);
       headers.set('Content-Length', (rangeEnd - rangeStart) + 1);
-      headers.set('Status', '206');
       const body = blob.slice(rangeStart, rangeEnd + 1);
       
-      console.log('range', event.request.headers.get('range'));
-      console.log('content-range', headers.get('content-range'));
-      console.log('content-length', headers.get('content-length'));
-      console.log('body size', body.size);
-      console.log('=====');
-      
-      return new Response(body, { headers, status: 206, statusText: 'Partial Content' });
+      return new Response(body, { headers, status: 206 });
     }*/
     
     return cachedResponse || fetch(event.request);
