@@ -9,10 +9,12 @@ function template({ items, currentlyPlayingId }) {
   return html`
     <div class="podcasts">
       ${state.items.map(item => html`
-        <section class="podcast" data-podcast-id=${item.id} role="buttom" tabindex="0" @click=${onPodcastClick}>
-          <h2 class="podcast-title">${item.title}</h2>
-          <p class="podcast-desc">${item.subtitle}</p>
-          <img class="podcast-img" src=${item.image} width="100" height="100">
+        <section class="podcast" data-podcast-id=${item.id} role="buttom" tabindex="0" >
+          <button class="podcast-titles">
+            <h2 class="podcast-title">${item.title}</h2>
+            <p class="podcast-subtitle">${item.subtitle}</p>
+          </button>
+          
           ${
             item.state === 'stored' ?
               html`<button @click=${onDeleteButtonClick}>Delete</button>`
@@ -59,7 +61,6 @@ async function getItemsFromFeed(response) {
       id,
       title: domItem.querySelector('title').textContent,
       subtitle: domItem.querySelector('subtitle').textContent,
-      image: new URL(domItem.querySelector('image').getAttribute('href'), 'https://developers.google.com/').href,
       duration: domItem.querySelector('duration').textContent,
       size: Number(domItem.querySelector('enclosure').getAttribute('length')),
       state: await caches.has(id).then((stored) => stored ? 'stored' : 'not-stored'),

@@ -26,6 +26,24 @@ html, body {
   content: '';
   position: absolute;
   bottom: 100%;
-  height: 5px;
-  background: linear-gradient(to top, #000, transparent);
+  height: 10px;
+  background: linear-gradient(to top, #0000001c, transparent);
+  left: 0;
+  right: 0;
+}
+
+.podcast {
+  display: grid;
+  grid-template-columns: auto 100px;
+}
+
+.podcast-titles {
+  padding: 20px;
+  overflow: hidden;
+}
+
+.podcast-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
