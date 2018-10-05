@@ -78,6 +78,15 @@ html, body {
   }
 }
 
+@keyframes action-leave {
+  from {
+    transform: rotate(0deg);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+}
+
+
 .action-dl,
 .action-abort,
 .action-del,
@@ -102,4 +111,8 @@ html, body {
   opacity: 1;
   transform: none;
   animation: action-enter 0.5s;
+}
+
+.action-off {
+  animation: action-leave 0.5s;
 }
