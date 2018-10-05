@@ -198,7 +198,7 @@ async function onDownloadButtonClick(event) {
   const reg = await navigator.serviceWorker.ready;
   const bgFetch = await reg.backgroundFetch.fetch(id, [item.src], {
     title: item.title,
-    icons: [{ sizes: '300x300', src: item.image }],
+    icons: [{ sizes: '300x300', src: item.image, type: 'image/png' }],
     downloadTotal: item.size
   });
   monitorBgFetch(bgFetch);
