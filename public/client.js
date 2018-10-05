@@ -3,6 +3,7 @@ import { html, render as litRender } from '/lit/lit-html.js';
 const app = document.querySelector('.app');
 let state = { items: [], currentlyPlayingId: '', };
 let firstRender = true;
+const abortControllers = new Map();
 
 function template({ items, currentlyPlayingId }) {
   const currentlyPlaying = currentlyPlayingId && items.find(item => item.id === currentlyPlayingId);
@@ -166,6 +167,13 @@ function onDeleteButtonClick(event) {
 async function onAbortButtonClick(event) {
   const podcastEl = event.target.closest('.podcast');
   const id = podcastEl.getAttribute('data-podcast-id');
+  
+  if (!('BackgroundFetchManager' in self)) {
+    // boo!
+    fallbackAbort(id);
+    return;
+  }
+  
   const reg = await navigator.serviceWorker.ready;
   const bgFetch = await reg.backgroundFetch.get(id);
   await bgFetch.abort();
@@ -177,6 +185,13 @@ async function onDownloadButtonClick(event) {
   const id = podcastEl.getAttribute('data-podcast-id');
   const item = state.items.find(item => item.id === id);
   updateItem(id, { state: 'fetching' });
+  
+  if (!('BackgroundFetchManager' in self)) {
+    // boo!
+    fallbackFetch(item);
+    return;
+  }
+  
   const reg = await navigator.serviceWorker.ready;
   const bgFetch = await reg.backgroundFetch.fetch(id, [item.src], {
     title: item.title,
@@ -184,6 +199,23 @@ async function onDownloadButtonClick(event) {
     downloadTotal: item.size
   });
   monitorBgFetch(bgFetch);
+}
+  
+async function fallbackFetch(item) {
+  const controller = new AbortController();
+  const { signal } = controller;
+  abortControllers.set(item.id, controller);
+  const response = await fetch(item.src, { signal });
+  const cache = await caches.open(item.id);
+  await cache.put(item.src, response);
+  updateItem(item.id, { state: 'stored' });
+}
+  
+function fallbackAbort(id) {
+  const controller = abortControllers.get(id);
+  if (!controller) return;
+  controller.abort();
+  updateItem(id, { state: 'not-stored' });
 }
   
 function onPodcastClick(event) {
