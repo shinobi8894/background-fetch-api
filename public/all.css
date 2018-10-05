@@ -110,9 +110,13 @@ html, body {
 .action-on {
   opacity: 1;
   transform: none;
-  animation: action-enter 0.5s;
+  animation: action-enter 0.2s;
 }
 
 .action-off {
-  animation: action-leave 0.5s;
+  animation: action-leave 0.2s;
+}
+
+.no-anim * {
+  animation-duration: 0s !important;
 }
