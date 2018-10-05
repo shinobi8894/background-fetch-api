@@ -9,8 +9,8 @@ function template({ items, currentlyPlayingId }) {
   return html`
     <div class="podcasts">
       ${state.items.map(item => html`
-        <section class="podcast" data-podcast-id=${item.id} role="buttom" tabindex="0" >
-          <button class="podcast-titles">
+        <section class="podcast" data-podcast-id=${item.id}>
+          <button class="podcast-titles" @click=${onPodcastClick}>
             <h2 class="podcast-title">${item.title}</h2>
             <p class="podcast-subtitle">${item.subtitle}</p>
           </button>

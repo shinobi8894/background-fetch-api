@@ -1,6 +1,6 @@
 html, body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: roboto, sans-serif;
 }
 
 .site-title {
@@ -35,15 +35,26 @@ html, body {
 .podcast {
   display: grid;
   grid-template-columns: auto 100px;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .podcast-titles {
+  all: unset;
+  display: block;
   padding: 20px;
   overflow: hidden;
+  line-height: 1.5;
+  color: #333;
 }
 
-.podcast-title {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+.podcast-title,
+.podcast-subtitle {
+  all: unset;
+  display: block;
+  padding: 16px 20px;
+  overflow: hidden; 
+}
+
+.podcast-subtitle {
+  
 }
