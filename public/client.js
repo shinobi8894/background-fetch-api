@@ -28,7 +28,7 @@ function template({ items, currentlyPlayingId }) {
     </div>
     ${currentlyPlaying && html`
       <div class="player">
-        <audio controls crossorigin src=${currentlyPlaying.src}></audio>
+        <audio controls autoplay crossorigin src=${currentlyPlaying.src}></audio>
       </div>
     `}
   `;

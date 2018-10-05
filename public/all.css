@@ -11,3 +11,21 @@ html, body {
   color: #fff;
   padding: 20px;
 }
+
+.player {
+  background: #eff3f4;
+  position: sticky;
+  bottom: 0;
+}
+
+.player audio {
+  width: 100%;
+}
+
+.player::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  height: 5px;
+  background: linear-gradient(to top, #000, transparent);
+}
