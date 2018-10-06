@@ -90,7 +90,7 @@ async function getItemsFromFeed(response) {
     return {
       src,
       id,
-      image: domItem.querySelector('image').getAttribute('href'),
+      image: new URL(domItem.querySelector('image').getAttribute('href')(,
       title: domItem.querySelector('title').textContent,
       subtitle: domItem.querySelector('subtitle').textContent,
       duration: domItem.querySelector('duration').textContent,
@@ -196,9 +196,10 @@ async function onDownloadButtonClick(event) {
   }
   
   const reg = await navigator.serviceWorker.ready;
+  console.log(item.image)
   const bgFetch = await reg.backgroundFetch.fetch(id, [item.src], {
     title: item.title,
-    icons: [{ sizes: '300x300', src: item.image, type: 'image/png' }],
+    icons: [{ sizes: '300x300', src: item.image, type: 'image/jpeg' }],
     downloadTotal: item.size
   });
   monitorBgFetch(bgFetch);
