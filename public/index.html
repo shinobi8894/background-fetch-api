@@ -35,14 +35,16 @@
       new WorkletAnimation('test', 
         new KeyframeEffect(
           document.querySelector('.header'), 
-          [{ transform: 'translateY(0)' }, { transform: 'translateY(-524px)' }],
-          { duration: 1, fill: 'both' },
+          [{ transform: 'translateY(0)' }, { transform: 'translateY(-300px)' }],
+          { duration: 1 },
         ),
         new ScrollTimeline({
           scrollSource: document.documentElement, 
           orientation: 'vertical',
           timeRange: 1,
-          endScrollOffset: '524px',
+          startScrollOffset: '0',
+          endScrollOffset: '1px',
+          fill: 'none',
         }),
       ).play();
     }
