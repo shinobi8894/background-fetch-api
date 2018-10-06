@@ -90,7 +90,7 @@ async function getItemsFromFeed(response) {
     return {
       src,
       id,
-      image: new URL(domItem.querySelector('image').getAttribute('href')(,
+      image: new URL(domItem.querySelector('image').getAttribute('href'), 'https://developers.google.com').href,
       title: domItem.querySelector('title').textContent,
       subtitle: domItem.querySelector('subtitle').textContent,
       duration: domItem.querySelector('duration').textContent,
