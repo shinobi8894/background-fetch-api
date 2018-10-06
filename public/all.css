@@ -1,41 +1,31 @@
-html, body {
-  margin: 0;
-  font-family: roboto, sans-serif;
-  overflow: hidden;
+html {
+  background: #696969; /* nicenicenice */
   height: 100%;
 }
 
-.container {
-  width: 100vw;
-  height: 100vh;
-  perspective-origin: 0 0;
-  perspective: 1px;
-  
-  overflow-x: hidden;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  background: #696969; /* nicenicenice */
-  
-  display: flex;
+html, body {
+  margin: 0;
+  font-family: roboto, sans-serif;
+}
+
+body {
+  display: grid;
   flex-flow: column;
+  min-height: 100%;
+  grid-template-rows: min-content auto;
 }
 
 .limit-width {
-  position: relative;
   max-width: 800px;
   margin: 0 auto;
-  transform: translateZ(0); /* fixes Chrome bug */
-  min-height: 100%;
   background: #fff;
+  width: 100%;
 }
 
-.parallax-child {
-  transform: translateZ(-2px) scale(3);
-  transform-origin: 0 0;
-}
-
-.app {
-  flex: 1;
+.header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
 .site-title {
@@ -71,6 +61,7 @@ html, body {
 
 .player {
   background: #eff3f4;
+  position: -webkit-sticky;
   position: sticky;
   bottom: 0;
 }

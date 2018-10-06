@@ -6,6 +6,33 @@
   <title>HTTP 203 Podcast</title>
   <meta name="theme-color" content="#c8b0a6">
   <link rel="manifest" href="manifest.json">
+  <script>
+    if ('animationWorklet' in CSS) {
+      CSS.animationWorklet.addModule('/anim-worklet.js');
+      
+      new WorkletAnimation('test', new KeyframeEffect(
+        document.querySelector('#a'), 
+        [
+          {
+            transform: 'translateX(0)'
+          },
+          {
+            transform: 'translateX(500px)'
+          }
+        ],
+        {
+          duration: 2000, 
+          fill: 'both'
+        }
+      ),
+      new ScrollTimeline({
+        scrollSource: document.querySelector('main'), 
+        orientation: "vertical", // "horizontal" or "vertical".
+        timeRange: 2000
+      })
+    ).play();
+    }
+  </script>
   <link rel="stylesheet" href="/all.css">
   <script crossorigin type="module" src="/client.js"></script>
   <link rel="preload" crossorigin as="script" href="/lit/lit-html.js">
@@ -22,17 +49,12 @@
   <link rel="preload" crossorigin as="fetch" href="/feed">
 </head>
 <body>
-  <div class="container">
-    <div class="parallax-child">
-      <div class="limit-width">
-        <h1 class="site-title"><img src="https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Fhero.jpg?1538735805226" alt="HTTP 203 Podcast"></h1>
-        <div class="podcasts"></div>
-      </div>
-    </div>
-    <div class="app">
-      <div class="limit-width">
-        
-      </div>
+  <header class="limit-width header">
+    <h1 class="site-title"><img src="https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Fhero.jpg?1538735805226" alt="HTTP 203 Podcast"></h1>
+  </header>
+  <div class="app">
+    <div class="limit-width">
+      <div class="podcasts"></div>
     </div>
   </div>
 </body>
