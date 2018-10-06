@@ -9,28 +9,6 @@
   <script>
     if ('animationWorklet' in CSS) {
       CSS.animationWorklet.addModule('/anim-worklet.js');
-      
-      new WorkletAnimation('test', new KeyframeEffect(
-        document.querySelector('#a'), 
-        [
-          {
-            transform: 'translateX(0)'
-          },
-          {
-            transform: 'translateX(500px)'
-          }
-        ],
-        {
-          duration: 2000, 
-          fill: 'both'
-        }
-      ),
-      new ScrollTimeline({
-        scrollSource: document.querySelector('main'), 
-        orientation: "vertical", // "horizontal" or "vertical".
-        timeRange: 2000
-      })
-    ).play();
     }
   </script>
   <link rel="stylesheet" href="/all.css">
@@ -52,6 +30,23 @@
   <header class="limit-width header">
     <h1 class="site-title"><img src="https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Fhero.jpg?1538735805226" alt="HTTP 203 Podcast"></h1>
   </header>
+  <script>
+    if ('animationWorklet' in CSS && 'ScrollTimeline' in self) {
+      new WorkletAnimation('test', 
+        new KeyframeEffect(
+          document.querySelector('.header'), 
+          [{ transform: 'translateY(0)' }, { transform: 'translateY(-524px)' }],
+          { duration: 1, fill: 'both' },
+        ),
+        new ScrollTimeline({
+          scrollSource: document.documentElement, 
+          orientation: 'vertical',
+          timeRange: 1,
+          endScrollOffset: '524px',
+        }),
+      ).play();
+    }
+  </script>
   <div class="app">
     <div class="limit-width">
       <div class="podcasts"></div>
