@@ -107,8 +107,10 @@ async function updateItem(id, update) {
   const index = state.items.findIndex(item => item.id === id);
   if (index === -1) return;
 
-  state = {...state};
-  state.items = state.items.slice();
+  state = {
+    ...state,
+    items: state.items.slice(),
+  };
 
   state.items[index] = {
     ...state.items[index],
@@ -210,9 +212,22 @@ async function fallbackFetch(item) {
   const { signal } = controller;
   abortControllers.set(item.id, controller);
   const response = await fetch(item.src, { signal });
+  const chunks = [];
+  let downloaded = 0;
+  const reader = response.body.getReader();
+  
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    downloaded += value.length;
+    chunks.push(value);
+    updateItem(item.id, { progress: downloaded / item.size });
+  }
+  
   const cache = await caches.open(item.id);
-  await cache.put(item.src, response);
-  updateItem(item.id, { state: 'stored' });
+  const inMemoryResponse = new Response(new Blob(chunks), { headers: response.headers });
+  await cache.put(item.src, inMemoryResponse);
+  updateItem(item.id, { state: 'stored', progress: 1 });
 }
   
 function fallbackAbort(id) {
