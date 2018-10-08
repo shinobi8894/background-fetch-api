@@ -198,7 +198,6 @@ async function onDownloadButtonClick(event) {
   }
   
   const reg = await navigator.serviceWorker.ready;
-  console.log(item.image)
   const bgFetch = await reg.backgroundFetch.fetch(id, [item.src], {
     title: item.title,
     icons: [{ sizes: '300x300', src: item.image, type: 'image/jpeg' }],
@@ -216,7 +215,7 @@ async function fallbackFetch(item) {
     const response = await fetch(item.src, { signal });
     const chunks = [];
     let downloaded = 0;
-    let lastReportedProgress = 0;
+    let lastUpdated = 0;
     const reader = response.body.getReader();
 
     while (true) {
@@ -224,10 +223,11 @@ async function fallbackFetch(item) {
       if (done) break;
       downloaded += value.length;
       chunks.push(value);
-      const progress = downloaded / item.size;
-      if (progress - lastReportedProgress > 0.2) {
-        updateItem(item.id, { progress });
-        lastReportedProgress = progress;
+      const now = Date.now();
+      const pro
+      if (now - lastUpdated > 500) {
+        updateItem(item.id, { progress: downloaded / item.size });
+        lastUpdated = now;
       }
       
     }
