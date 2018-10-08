@@ -1,7 +1,7 @@
 import { html, render as litRender } from '/lit/lit-html.js';
 
 const app = document.querySelector('.app');
-let state = { items: [], currentlyPlayingId: '', };
+let state = { items: [], currentlyPlayingId: '' };
 let firstRender = true;
 const abortControllers = new Map();
 
@@ -216,6 +216,7 @@ async function fallbackFetch(item) {
     const response = await fetch(item.src, { signal });
     const chunks = [];
     let downloaded = 0;
+    let lastReportedProgress = 0;
     const reader = response.body.getReader();
 
     while (true) {
@@ -223,7 +224,12 @@ async function fallbackFetch(item) {
       if (done) break;
       downloaded += value.length;
       chunks.push(value);
-      updateItem(item.id, { progress: downloaded / item.size });
+      const progress = downloaded / item.size;
+      if (progress - lastReportedProgress > 0.2) {
+        updateItem(item.id, { progress });
+        lastReportedProgress = progress;
+      }
+      
     }
 
     const cache = await caches.open(item.id);
@@ -231,6 +237,7 @@ async function fallbackFetch(item) {
     await cache.put(item.src, inMemoryResponse);
     updateItem(item.id, { state: 'stored', progress: 1 });
   } catch (err) {
+    if (err.name === 'AbortError') return;
     updateItem(item.id, { state: 'failed' });
   }
   
