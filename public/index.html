@@ -6,11 +6,6 @@
   <title>HTTP 203 Podcast</title>
   <meta name="theme-color" content="#c8b0a6">
   <link rel="manifest" href="manifest.json">
-  <script>
-    if ('animationWorklet' in CSS) {
-      CSS.animationWorklet.addModule('/anim-worklet.js');
-    }
-  </script>
   <link rel="stylesheet" href="/all.css">
   <script crossorigin type="module" src="/client.js"></script>
   <link rel="preload" crossorigin as="script" href="/lit/lit-html.js">
@@ -32,19 +27,27 @@
   </header>
   <script>
     if ('animationWorklet' in CSS && 'ScrollTimeline' in self) {
-      new WorkletAnimation('test', 
+      const passthroughAnimWorkerBlob = new Blob([`
+        registerAnimator('passthrough', class {
+          animate(currentTime, effect) {
+            effect.localTime = currentTime; 
+          }
+        });
+      `], {type: 'text/javascript'});
+      
+      CSS.animationWorklet.addModule(URL.createObjectURL(passthroughAnimWorkerBlob));
+      
+      new WorkletAnimation(
+        'passthrough', 
         new KeyframeEffect(
           document.querySelector('.header'), 
-          [{ transform: 'translateY(0)' }, { transform: 'translateY(-300px)' }],
-          { duration: 1 },
+          [{ transform: 'translateY(0)' }, { transform: `translateY(${2786 / -4}px)` }],
+          { duration: 1000 },
         ),
         new ScrollTimeline({
           scrollSource: document.documentElement, 
           orientation: 'vertical',
-          timeRange: 1,
-          startScrollOffset: '0',
-          endScrollOffset: '1px',
-          fill: 'none',
+          timeRange: 1000,
         }),
       ).play();
     }
