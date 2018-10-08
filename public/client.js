@@ -211,24 +211,30 @@ async function fallbackFetch(item) {
   const controller = new AbortController();
   const { signal } = controller;
   abortControllers.set(item.id, controller);
-  const response = await fetch(item.src, { signal });
-  const chunks = [];
-  let downloaded = 0;
-  const reader = response.body.getReader();
   
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    downloaded += value.length;
-    chunks.push(value);
-    console.log(downloaded / item.size);
-    updateItem(item.id, { progress: downloaded / item.size });
+  try {
+    const response = await fetch(item.src, { signal });
+    const chunks = [];
+    let downloaded = 0;
+    const reader = response.body.getReader();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      downloaded += value.length;
+      chunks.push(value);
+      console.log(downloaded / item.size);
+      updateItem(item.id, { progress: downloaded / item.size });
+    }
+
+    const cache = await caches.open(item.id);
+    const inMemoryResponse = new Response(new Blob(chunks), { headers: response.headers });
+    await cache.put(item.src, inMemoryResponse);
+    updateItem(item.id, { state: 'stored', progress: 1 });
+  } catch (err) {
+    updateItem(item.id, { state: 'failed' });
   }
   
-  const cache = await caches.open(item.id);
-  const inMemoryResponse = new Response(new Blob(chunks), { headers: response.headers });
-  await cache.put(item.src, inMemoryResponse);
-  updateItem(item.id, { state: 'stored', progress: 1 });
 }
   
 function fallbackAbort(id) {
