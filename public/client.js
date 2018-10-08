@@ -223,7 +223,6 @@ async function fallbackFetch(item) {
       if (done) break;
       downloaded += value.length;
       chunks.push(value);
-      console.log(downloaded / item.size);
       updateItem(item.id, { progress: downloaded / item.size });
     }
 
