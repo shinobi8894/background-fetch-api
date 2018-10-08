@@ -224,9 +224,9 @@ async function fallbackFetch(item) {
       downloaded += value.length;
       chunks.push(value);
       const now = Date.now();
-      const pro
-      if (now - lastUpdated > 500) {
-        updateItem(item.id, { progress: downloaded / item.size });
+      const progress = downloaded / item.size;
+      if (now - lastUpdated > 500 || progress === 1) {
+        updateItem(item.id, { progress });
         lastUpdated = now;
       }
       
