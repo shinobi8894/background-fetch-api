@@ -1,4 +1,4 @@
-const version = '1.3.7';
+const version = '1.3.8';
 const staticCache = `static-${version}`;
 const dynamicCache = 'dynamic'
 
@@ -22,7 +22,8 @@ addEventListener('install', (event) => {
       "/lit/lib/dom.js",
       "/lit/lib/render.js",
       "/lit/lib/directive.js",
-      "/lit/lib/template-factory.js"
+      "/lit/lib/template-factory.js",
+      "https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Fhero.jpg?1538735805226",
     ]);
   }());
 });
