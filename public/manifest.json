@@ -5,18 +5,22 @@
   "icons": [{
     "src": "https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Ficon.jpg?1538739694463",
     "sizes": "512x512",
+    "purpose": "maskable",
     "type": "image/jpeg"
   }, {
     "src": "https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Ficon-small.jpg?1538832962747",
     "sizes": "192x192",
+    "purpose": "maskable",
     "type": "image/jpeg"
   }, {
     "src": "https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Ficon-large.png?1538833411634",
     "sizes": "512x512",
+    "purpose": "maskable",
     "type": "image/png"
   }, {
     "src": "https://cdn.glitch.com/6801d344-cd53-4f92-aedc-9202eb8d91c4%2Ficon-small.png?1538833411634",
     "sizes": "192x192",
+    "purpose": "maskable",
     "type": "image/png"
   }],
   "background_color": "#fff",
