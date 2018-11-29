@@ -95,6 +95,11 @@ addEventListener('backgroundfetchsuccess', event => {
   }());
 });
 
+addEventListener('backgroundfetchfail', event => {
+  console.log('Background fetch failed', event);
+});
+
+
 addEventListener('backgroundfetchclick', event => {
   clients.openWindow('/');
 });
