@@ -18,7 +18,7 @@ app.use("/lit/", express.static('node_modules/lit-html'));
 
 app.get("/feed", (req, res) => {
   res.set('Content-Type', 'text/xml');
-  const httpReq = http.request('http://feeds.feedburner.com/Http203Podcast', (httpRes) => {
+  const httpReq = http.request('http://http203.googledevelopers.libsynpro.com/rss', (httpRes) => {
     res.status(httpRes.statusCode);
     httpRes.pipe(res);
   });
