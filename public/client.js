@@ -84,16 +84,16 @@ function render() {
 async function getItemsFromFeed(response) {
   const dom = new DOMParser().parseFromString(await response.text(), 'text/xml');
   const itemPromises = [...dom.querySelectorAll('item')].map(async domItem => {
-    const src = domItem.querySelector('enclosure').attributes.url.value;
+    const src = new URL(domItem.querySelector('enclosure').attributes.url.value);
+    src.protocol = 'https';
     const id = 'podcast-' + /\/([^\/]+)\.(mp3|m4a)($|\?)/.exec(src)[1];
-    const httpsSrc = new URL(src);
-    httpsSrc.scheme = 'https';
-    console.log(httpsSrc.href);
+    const image = new URL(domItem.querySelector('image').getAttribute('href'));
+    image.protocol = 'https';
     
     return {
-      src: httpsSrc.href,
       id,
-      image: new URL(domItem.querySelector('image').getAttribute('href'), 'https://developers.google.com').href,
+      src: src.href,
+      image: image.href,
       title: domItem.querySelector('title').textContent,
       subtitle: domItem.querySelector('subtitle').textContent,
       duration: domItem.querySelector('duration').textContent,
