@@ -1,4 +1,4 @@
-const http = require('http');
+const https = require('https');
 const express = require('express');
 const app = express();
 
@@ -18,7 +18,7 @@ app.use("/lit/", express.static('node_modules/lit-html'));
 
 app.get("/feed", (req, res) => {
   res.set('Content-Type', 'text/xml');
-  const httpReq = http.request('http://http203.googledevelopers.libsynpro.com/rss', (httpRes) => {
+  const httpReq = https.request('https://http203.libsyn.com/rss', (httpRes) => {
     res.status(httpRes.statusCode);
     httpRes.pipe(res);
   });
