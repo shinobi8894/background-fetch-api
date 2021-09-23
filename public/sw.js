@@ -2,7 +2,6 @@ const version = '1.3.9';
 const staticCache = `static-${version}`;
 const dynamicCache = 'dynamic'
 
-
 addEventListener('install', (event) => {
   skipWaiting();
   
@@ -45,10 +44,9 @@ addEventListener('activate', (event) => {
 });
 
 addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
   
   // Skip the service worker for the feed. The page handles the caching.
-  if (url.origin === location.origin && url.pathname === '/feed') return;
+  if (event.request.url === 'https://http203.libsyn.com/rss') return;
   
   event.respondWith(async function() {
     
@@ -56,7 +54,8 @@ addEventListener('fetch', (event) => {
     const cachedResponse = await caches.match(event.request);
     
     // Generate partial responses
-    if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
+    // This doesn't seem to be needed anymore
+    /*if (cachedResponse && event.request.headers.has('range') && cachedResponse.status !== 206) {
       // Create a partial response.
       // At some point we'll fix caches.match to generate these.
       const blob = await cachedResponse.blob();
@@ -70,7 +69,7 @@ addEventListener('fetch', (event) => {
       const body = blob.slice(rangeStart, rangeEnd + 1);
       
       return new Response(body, { headers, status: 206 });
-    }
+    }*/
     
     return cachedResponse || fetch(event.request);
   }());

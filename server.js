@@ -16,20 +16,6 @@ app.get("/", (req, res) => {
 
 app.use("/lit/", express.static('node_modules/lit-html'));
 
-app.get("/feed", (req, res) => {
-  res.set('Content-Type', 'text/xml');
-  const httpReq = https.request('https://http203.libsyn.com/rss', (httpRes) => {
-    res.status(httpRes.statusCode);
-    httpRes.pipe(res);
-  });
-  
-  httpReq.on('error', (e) => {
-    res.status(500).end();
-  });
-  
-  httpReq.end();
-});
-
 // listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log('Your app is listening on port ' + listener.address().port);

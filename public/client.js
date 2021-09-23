@@ -1,5 +1,6 @@
 import { html, render as litRender } from '/lit/lit-html.js';
 
+const feedUrl = 'https://http203.libsyn.com/rss';
 const app = document.querySelector('.app');
 let state = { items: [], currentlyPlayingId: '' };
 let firstRender = true;
@@ -270,7 +271,7 @@ async function init() {
   
   // Look for cached feed
   const cache = await caches.open('dynamic');
-  const cachedFeed = await cache.match('/feed');
+  const cachedFeed = await cache.match(feedUrl);
   
   if (cachedFeed) {
     state = { ...state, items: await getItemsFromFeed(cachedFeed) };
@@ -279,10 +280,10 @@ async function init() {
   
   if ('BackgroundFetchManager' in self) checkOngoingFetches();
   
-  const networkFeed = await fetch('/feed');
+  const networkFeed = await fetch(feedUrl);
   
   if (networkFeed.ok) {
-    cache.put('/feed', networkFeed.clone());
+    cache.put(feedUrl, networkFeed.clone());
     const newItems = (await getItemsFromFeed(networkFeed)).filter(item => !state.items.find(i => i.id === item.id));
     
     if (newItems.length > 0) {
